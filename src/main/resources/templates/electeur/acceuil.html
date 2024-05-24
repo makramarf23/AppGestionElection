@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de Bord de l'Électeur</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<!-- Barre de navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Tableau de Bord de l'Électeur</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/electeur/logout">Déconnexion</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h2>Liste des Candidats</h2>
+    <div class="row">
+        <!-- Boucle sur la liste des candidats -->
+        <div class="col-md-4 mb-3" th:each="candidat : ${candidats}">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${candidat.candidate}"></h5>
+                    <p class="card-text" th:if="${candidat.affC}" th:text="'Votes: ' + ${candidat.votes}"></p>
+                    <form th:action="@{/electeur/voteCandidat}" method="post">
+                        <input type="hidden" name="idCandidat" th:value="${candidat.idCandidat}" />
+                        <button type="submit" class="btn btn-primary">Choisir</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS et ses dépendances -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

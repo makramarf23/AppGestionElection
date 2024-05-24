@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${title}">Application de Vote</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif; /* Nouvelle police */
+      overflow: hidden; /* Pour éviter les défilements si l'image est plus grande que la fenêtre */
+    }
+    .navbar {
+      background-color: #333; /* Nouvelle couleur de fond de la barre de navigation */
+    }
+    .navbar-brand, .nav-link {
+      color: #fff !important; /* Nouvelle couleur du texte de la barre de navigation */
+    }
+    .btn-custom-auth {
+      background-color: #007bff; /* Nouvelle couleur de fond du bouton d'authentification */
+      color: #fff; /* Nouvelle couleur du texte du bouton d'authentification */
+    }
+    .btn-custom-insc {
+      background-color: #28a745; /* Nouvelle couleur de fond du bouton d'inscription */
+      color: #fff; /* Nouvelle couleur du texte du bouton d'inscription */
+    }
+    .main-section {
+      background-size: cover; /* Ajuste la taille de l'image pour couvrir toute la section */
+      background-position: center; /* Centre l'image de fond */
+      background-repeat: no-repeat; /* Évite la répétition de l'image de fond */
+      border-radius: 10px; /* Coins arrondis de la section principale */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre autour de la section principale */
+      padding: 50px; /* Espacement intérieur de la section principale */
+      position: relative; /* Position relative pour z-index */
+      z-index: 1; /* Place la section principale au-dessus de l'image de fond */
+      overflow: hidden; /* Pour éviter les défilements si l'image est plus grande que la fenêtre */
+    }
+  </style>
+</head>
+<body>
+<!-- Barre de navigation -->
+<nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="#">Bienvenue Dans Le Processus Électoral</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link btn btn-custom-auth mr-2" href="/authentification">Authentification</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link btn btn-custom-insc" href="/inscription">Inscription</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<section class="d-flex justify-content-center align-items-center min-vh-100 position-relative">
+  <div class="text-center main-section">
+    <h1 class="font-weight-bold mb-4">Application de Vote</h1>
+    <div th:if="${session.msg}" class="alert alert-danger" role="alert">
+      <h3 th:text="${session.msg}"></h3>
+      <th:block th:text="${#session.removeAttribute('msg')}"></th:block>
+    </div>
+  </div>
+</section>
+
+
+<!-- Bootstrap JS et ses dépendances -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.amazonaws.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

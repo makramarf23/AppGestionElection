@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de Bord de l'Admin</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<!-- Barre de navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Tableau de Bord de l'Admin</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/dashboard">Tableau de Bord</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/archiveCandidat">Liste des Candidats Archivés</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/logout">Déconnexion</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h2>Liste des Candidats</h2>
+
+    <!-- Bouton pour ajouter un candidat -->
+    <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#ajouterCandidatModal">Ajouter un Candidat</button>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom du Candidat</th>
+                <th>Votes</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Boucle sur la liste des candidats -->
+            <tr th:each="candidat : ${candidats}">
+                <td th:text="${candidat.idCandidat}"></td>
+                <td th:text="${candidat.candidate}"></td>
+                <td th:text="${candidat.votes}"></td>
+                <td>
+                    <!-- Boutons d'action -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" th:data-target="'#modifierCandidatModal' + ${candidat.idCandidat}">Modifier</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" th:data-target="'#supprimerCandidatModal' + ${candidat.idCandidat}">Supprimer</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal pour ajouter un candidat -->
+    <div class="modal fade" id="ajouterCandidatModal" tabindex="-1" role="dialog" aria-labelledby="ajouterCandidatModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ajouterCandidatModalLabel">Ajouter un Candidat</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/admin/ajouterCandidat}" method="post">
+                        <div class="form-group">
+                            <label for="nomCandidat">Nom du Candidat</label>
+                            <input type="text" class="form-control" id="nomCandidat" name="nomCandidat" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals pour modifier et supprimer un candidat -->
+    <div th:each="candidat : ${candidats}">
+        <!-- Modal pour modifier un candidat -->
+        <div class="modal fade" th:id="'modifierCandidatModal' + ${candidat.idCandidat}" tabindex="-1" role="dialog" aria-labelledby="modifierCandidatModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modifierCandidatModalLabel">Modifier un Candidat</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/admin/modifierCandidat}" method="post">
+                            <input type="hidden" name="idCandidat" th:value="${candidat.idCandidat}" />
+                            <div class="form-group">
+                                <label for="nomCandidat">Nom du Candidat</label>
+                                <input type="text" class="form-control" name="nomCandidat" th:value="${candidat.candidate}" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Modifier</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal pour supprimer un candidat -->
+        <div class="modal fade" th:id="'supprimerCandidatModal' + ${candidat.idCandidat}" tabindex="-1" role="dialog" aria-labelledby="supprimerCandidatModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="supprimerCandidatModalLabel">Supprimer un Candidat</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Êtes-vous sûr de voulooir supprimer ce candidat ? Cette action est irréversible.</p>
+                        <form th:action="@{/admin/supprimerCandidat}" method="post">
+                            <input type="hidden" name="idCandidat" th:value="${candidat.idCandidat}" />
+                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton pour changer l'attribut affC -->
+    <div>
+        <div class="row">
+            <div class="col">
+                <form th:action="@{/admin/afficherResultat}" method="post">
+                    <button type="submit" class="btn btn-info">Afficher Resultat Des Elections</button>
+                </form>
+            </div>
+            <div class="col">
+                <form th:action="@{/admin/rinitialiserElections}" method="post">
+                    <button type="submit" class="btn btn-danger">Reset Elections</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap JS et ses dépendances -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
